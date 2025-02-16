@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const mysql = require('mysql2');
 const cookieParser = require('cookie-parser');
-const csrf = require('csurf');
 
 const app = express();
 const port = 3000;
@@ -16,19 +15,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, httpOnly: true, sameSite: 'strict' }
 }));
-
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection);
-
-app.use((err, req, res, next) => {
-    if (err.code === 'EBADCSRFTOKEN') {
-        res.status(403).send('Invalid CSRF token');
-    } else {
-        next(err);
-    }
-});
 
 //(https://www.geeksforgeeks.org/how-to-use-connection-pooling-with-mysql-in-nodejs/)
 // Database connection (createPool to add connection Limit)

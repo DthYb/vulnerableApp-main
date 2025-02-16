@@ -9,15 +9,19 @@ router.get('/', (req, res) => {
 
 // Login route
 router.get('/login', (req, res) => {
-    res.send('<form method="post" action="/login"><input type="hidden" name="_csrf" value="${req.csrfToken()}"><input name="username" placeholder="Username"/><input type="password" name="password" placeholder="Password"/><button type="submit">Login</button></form>');
+    res.send('<form method="post" action="/login"><input name="username" placeholder="Username"/><input type="password" name="password" placeholder="Password"/><button type="submit">Login</button></form>');
 });
 
 router.post('/login', (req, res) => {
     const { username, password } = req.body;
+    const hashedPassword = require('crypto')
+    .createHash('sha256')
+    .update(password)
+    .digest('hex');
 
-    const query = 'SELECT username, password FROM users WHERE username = ? AND password = ?';
+    const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
 
-    db.query(query, [username, password], (err, results) => {
+    db.query(query, [username, hashedPassword], (err, results) => {
         if (err) {
             console.error('Database query failed:', err);
             return res.status(500).send('An internal server error occurred');

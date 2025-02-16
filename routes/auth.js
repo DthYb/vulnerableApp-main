@@ -6,7 +6,6 @@ const db = require('../config/database');
 router.get('/register', (req, res) => {
     res.send(`
         <form method="post" action="/register">
-            <input type="hidden" name="_csrf" value="${req.csrfToken()}">
             <input name="username" placeholder="Username" required />
             <input type="password" name="password" placeholder="Password" required />
             <input type="password" name="confirmpassword" placeholder="Password" required />

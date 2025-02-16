@@ -17,7 +17,6 @@ router.get('/comments', (req, res) => {
 
         res.send(`
             <form method="post" action="/comments">
-                <input type="hidden" name="_csrf" value="${req.csrfToken()}">
                 <textarea name="text" placeholder="Your comment"></textarea>
                 <button type="submit">Post Comment</button>
             </form>
