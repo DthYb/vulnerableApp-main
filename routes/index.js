@@ -14,10 +14,14 @@ router.get('/login', (req, res) => {
 
 router.post('/login', (req, res) => {
     const { username, password } = req.body;
+    const hashedPassword = require('crypto')
+    .createHash('sha256')
+    .update(password)
+    .digest('hex');
 
     const query = 'SELECT username, password FROM users WHERE username = ? AND password = ?';
 
-    db.query(query, [username, password], (err, results) => {
+    db.query(query, [username, hashedPassword], (err, results) => {
         if (err) {
             console.error('Database query failed:', err);
             return res.status(500).send('An internal server error occurred');
