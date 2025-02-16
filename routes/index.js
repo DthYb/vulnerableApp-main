@@ -19,7 +19,7 @@ router.post('/login', (req, res) => {
     .update(password)
     .digest('hex');
 
-    const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
+    const query = 'SELECT username, password FROM users WHERE username = ? AND password = ?';
 
     db.query(query, [username, hashedPassword], (err, results) => {
         if (err) {
